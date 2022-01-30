@@ -1,4 +1,4 @@
-const { testUsername } = require("./Verification");
+
 
 var dbConn = require(__dirname + '/db.config');
 var verify = require(__dirname + '/Verification');
