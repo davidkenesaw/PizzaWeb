@@ -8,7 +8,7 @@ function LogUserIn(req,res){//not done
     var user = req.body.Username;
     var Password = req.body.Password;//add use of password
     
-    dbConn.query("SELECT * FROM Users WHERE UserName = '"+dbConn.escape(user)+"' AND Password = '"+Password+"'",function(err,rows){
+    dbConn.query("SELECT * FROM Users WHERE UserName = '"+user+"' AND Password = '"+Password+"'",function(err,rows){
         
         if(err){
             const error = "there was an issue with your username or password";
