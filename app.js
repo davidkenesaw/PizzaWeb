@@ -27,8 +27,31 @@ app.get("/RegisterPage",function(req,res){
     res.render("Register",{error});
 });
 
-app.post("/Register",lib.insertUser);//config---->db.functions.js
+app.post("/Register",lib.CheckUser);//config---->db.functions.js
 app.post("/Login",lib.LogUserIn);//config---->db.functions.js
+
+app.get('/registerCodePageRout',function(req,res){
+    var error = "";
+    res.render('registerCodePage', { error });
+    
+});
+app.post('/CompleteRegister',function(req,res){
+    const crackedCode = req.cookies.RegisterSecrete;
+    const user = req.body.code;
+
+    if(user == crackedCode){
+        res.clearCookie("RegisterSecrete");
+        lib.insertUser(req.cookies.Email,req.cookies.Pass,req,res);
+        res.redirect("/UserRegistered");
+    }else{
+        var error = "code incorrect"; 
+        res.render("CompleteRegister",{error})
+    }
+});
+app.get('/UserRegistered',function(req,res){
+    res.render('Registered');
+});
+
 app.post("/ForgetPasswordCodegenerate",function(req,res){
     
     var randomCode = Math.floor(Math.random() * 9999) + 1000
