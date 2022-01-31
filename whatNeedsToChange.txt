@@ -13,3 +13,5 @@ use bycrypt
 
 
 use nodemailer
+
+change username to email
