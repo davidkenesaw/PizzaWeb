@@ -18,7 +18,7 @@ app.use(cookieParser('thisismysecrete'));//change this and make it secrete
 app.get("/",function(req,res){
     res.render("HomePageBeforeLog");
 });
-app.get("/LoginPage",function(req,res){
+app.get("/LoginPage", verify.verifyForgotPassCodeTrue, verify.verifyForgotPass, function(req,res){
     const error = "";
     res.render("Login2",{error});
 });
@@ -29,6 +29,42 @@ app.get("/RegisterPage",function(req,res){
 
 app.post("/Register",lib.insertUser);//config---->db.functions.js
 app.post("/Login",lib.LogUserIn);//config---->db.functions.js
+app.post("/ForgetPasswordCodegenerate",function(req,res){
+    
+    var randomCode = Math.floor(Math.random() * 9999) + 1000
+
+    res.cookie('ForgotPasswordsecrete',randomCode);
+    
+    res.redirect("/ForgotPasswordCodePage");
+    
+});
+app.get('/ForgotPasswordCodePage', verify.verifyForgotPassFalse, function(req,res){
+    var error = ""; 
+    res.render("ForgotPasswordCode",{ error });
+    
+});
+app.post("/EnterPassCode", function(req,res){
+    const crackedCode = req.cookies.ForgotPasswordsecrete;
+    const user = req.body.code;
+    console.log(typeof crackedCode+typeof user);
+
+    if(user == crackedCode){
+        res.clearCookie("ForgotPasswordsecrete");
+        res.cookie('CodeEntered',true);
+        res.redirect("/ForgotPasswordPage");
+    }else{
+        var error = "code incorrect"; 
+        res.render("ForgotPasswordCode",{error})
+    }
+});
+app.get('/ForgotPasswordPage', verify.verifyForgotPassCodeFalse, function(req,res){
+    res.render('ChangePass');
+});
+app.post('/ChangePassword',function(req,res){
+    res.clearCookie("CodeEntered");
+    res.send("Not done");
+});
+
 
 app.get("/Homepage", verify.verifyUser, function(req,res){
     const user = req.cookies.UserName;
