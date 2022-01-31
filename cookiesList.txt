@@ -1,0 +1,10 @@
+email
+pass
+register secrete
+forgot user secrete
+user 
+
+
+
+use sessions
+stop using cookies
