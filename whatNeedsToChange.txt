@@ -15,3 +15,20 @@ use bycrypt
 use nodemailer
 
 change username to email
+
+
+
+
+register
+-needs email 
+-sessions
+-testing
+
+login:
+-needs more testing
+-sessions
+
+forgot password: 
+-needs email
+-needs sessions
+-testing
